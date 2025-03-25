@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CST - MR | Client Requirements Portal</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            background-color: #000000; /* Premium Solid Black Background */
+            color: #e2e2e2;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 20px;
+            transition: background 0.5s ease;
+            position: relative; /* Needed for sticky footer */
+            padding-bottom: 50px; /* Height of the footer */
+        }
+
+        h1 {
+            margin-bottom: 30px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-weight: 700;
+        }
+
+        .main-container {
+    display: flex;
+    width: 100%;
+    max-width: 1200px;
+    gap: 30px;
+    padding: 0 20px;
+    margin-bottom: 30px;
+    align-items: stretch; /* This ensures containers stretch to match each other */
+}
+
+.categories-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(2, 1fr); /* Make rows equal height */
+    gap: 20px;
+    flex: 7; /* Adjust this ratio as needed */
+}
+
+.display-container {
+    flex: 3; /* Adjust this ratio as needed */
+    display: flex;
+    flex-direction: column;
+    position: relative; /* Change from sticky to relative */
+    height: auto; /* Let it size naturally */
+    min-height: 100%; /* Ensure it's at least as tall as the categories */
+}
+
+.display-box {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* Make it fill the container */
+}
+
+.display-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.button-row {
+    margin-top: auto; /* Push buttons to bottom */
+}
+
+/* Make all sections the same height */
+.section {
+    height: 100%;
+}
+
+.button-row {
+    display: flex;
+    gap: 10px;
+}
+
+.button-row button {
+    flex: 1;
+    padding: 15px;
+}
+
+
+.clear-all-btn {
+    background: linear-gradient(to right, #FF7043, #FF5722);
+    padding: 15px;
+    font-size: 1.1rem;
+}
+
+.clear-all-btn:hover {
+    background: linear-gradient(to right, #FF5722, #FF7043);
+}
+
+
+        .display-container {
+            flex: 2;
+            position: sticky;
+            top: 20px;
+            align-self: flex-start;
+            height: calc(100vh - 150px);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            width: 220px;
+            height: 380px; /* Fixed height for all sections */
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            overflow-y: auto; /* Enable scrollbars */
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        }
+
+        .section h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #8E54E9;
+            font-size: 1.2rem;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 0;
+            z-index: 1;
+        }
+
+        .button-container {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            gap: 10px;
+        }
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 15px 10px;
+            border: none;
+            border-radius: 5px;
+            background: linear-gradient(to right, #4776E6, #8E54E9);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 600;
+            text-align: center;
+            min-height: 50px;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 7px 10px rgba(0, 0, 0, 0.2);
+            background: linear-gradient(to right, #8E54E9, #4776E6);
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        /* Display Box Styles */
+        .display-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .display-box h3 {
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #8E54E9;
+            font-size: 1.2rem;
+            font-weight: 600;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 5px 0;
+            border-radius: 5px;
+        }
+
+        .display-content {
+            flex-grow: 1;
+            text-align: left;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 5px;
+            margin-bottom: 15px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            font-family: monospace;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+
+        .copy-all-btn {
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            padding: 15px;
+            font-size: 1.1rem;
+        }
+
+        .copy-all-btn:hover {
+            background: linear-gradient(to right, #FF4B2B, #FF416C);
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 4px;
+            z-index: 1000;
+            animation: fadeIn 0.3s, fadeOut 0.3s 2s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                bottom: 0;
+            }
+
+            to {
+                opacity: 1;
+                bottom: 20px;
+            }
+        }
+
+        @keyframes fadeOut {
+            from {
+                opacity: 1;
+            }
+
+            to {
+                opacity: 0;
+            }
+        }
+
+        .theme-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .theme-toggle span {
+            margin-right: 10px;
+            font-weight: 600;
+        }
+
+        .theme-toggle button {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            background: none;
+            box-shadow: none;
+        }
+
+        .light-theme {
+            background: linear-gradient(135deg, #f5f7fa, #c3cfe2);
+            color: #333;
+        }
+
+        .light-theme .section, .light-theme .display-box {
+            background: white;
+            color: #333;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme h3 {
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+
+        .light-theme .display-content {
+            background: rgba(0, 0, 0, 0.05);
+            color: #333;
+        }
+
+        .light-theme h1 {
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        .light-theme .theme-toggle {
+            background: rgba(0, 0, 0, 0.1);
+        }
+
+        .light-theme .theme-toggle:hover {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Custom scrollbar */
+        .section::-webkit-scrollbar, .display-content::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .section::-webkit-scrollbar-track, .display-content::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+        }
+
+        .section::-webkit-scrollbar-thumb, .display-content::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 10px;
+        }
+
+        .section::-webkit-scrollbar-thumb:hover, .display-content::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.5);
+        }
+
+        /* Footer Separator */
+        .footer-separator {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+            margin-bottom: 10px;
+        }
+
+        /* Footer Styles */
+        footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color: #111;
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Preview Button */
+        .preview-button {
+            position: fixed;
+            right: -180px; /* Default position - partially hidden */
+            bottom: 80px;
+            background: linear-gradient(to right, #FF416C, #FF4B2B);
+            color: white;
+            padding: 15px 20px;
+            border-radius: 30px 0 0 30px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: right 0.5s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            width: 240px; /* Fixed width */
+        }
+
+        .preview-button:hover {
+            right: 0; /* Fully visible on hover */
+        }
+
+        .preview-button i {
+            margin-right: 10px;
+            font-size: 20px;
+        }
+
+        .preview-button.initial-show {
+            right: 0; /* Fully visible initially */
+            animation: pulse 2s infinite;
+        }
+
+        .preview-button.visible {
+            right: -180px; /* Partially visible after initial show */
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 65, 108, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 65, 108, 0);
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .categories-container {
+                justify-content: center;
+            }
+            
+            .display-container {
+                position: static;
+                height: auto;
+                min-height: 300px;
+            }
+            
+            .display-content {
+                min-height: 200px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .section {
+                width: 100%;
+                max-width: 300px;
+                height: auto;
+                min-height: 300px;
+                max-height: 400px;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+            }
+
+            .preview-button {
+                bottom: 60px;
+            }
+        }
+        button.selected {
+    background: linear-gradient(to right, #6c7989, #8e9eab);
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+}
+
+button.selected:hover {
+    background: linear-gradient(to right, #6c7989, #8e9eab);
+    transform: translateY(0);
+}
+.footer-separator {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
+    margin-bottom: 10px;
+}
+
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <span>Theme</span>
+        <button id="themeButton">🌙</button>
+    </div>
+
+    <h1>CST - MR | Client Requirements Portal</h1>
+
+    <div class="main-container">
+        <div class="categories-container">
+            <div class="section">
+                <h3>High Impact</h3>
+                <div class="button-container">
+                    <button onclick="displayData('Rotating Cube:', '3 Frames at 300x250 | JPG\n1 Frame at 250x250 | JPG')">Rotating Cube</button>
+                    <button onclick="displayData('Slideshow:', '3 Frames at 300x250 | JPG')">Slideshow</button>
+                    <button onclick="displayData('Reveal AD:', '1 Frame at 300x250 | JPG\n1 Cover at 300x250 | JPG')">Reveal AD</button>
+                    <button onclick="displayData('Square Scroller:', '1 Frame at 300x250 | PSD')">Square Scroller</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>High Visibility</h3>
+                <div class="button-container">
+                    <button onclick="displayData('3x Interstitial:', '3 Frames 450x800 | JPG')">3x Interstitial</button>
+                    <button onclick="displayData('GIF Interstitial:', '3 Frames 450x800 | JPG')">GIF Interstitial</button>
+                    <button onclick="displayData('Revealer Interstitial:', '1 Frame 300x600 | JPG\n1 Cover 300x600 | JPG')">Revealer Interstitial</button>
+                    <button onclick="displayData('Vertical Scroller:', '1 Frame 300x600 | PSD')">Vertical Scroller</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Interactive</h3>
+                <div class="button-container">
+                    <button onclick="displayData('Expandable AD', '1 Cover at 300x250 | JPG\n1 Frame at 300x600 | JPG')">Expandable AD</button>
+                    <button onclick="displayData('Page Peel', '1 Cover at 300x250 | JPG\n1 Frame at 300x250 | JPG')">Page Peel</button>
+                    <button onclick="displayData('Flip Banner', '2 Frames at 300x250 | JPG')">Flip Banner</button>
+                    <button onclick="displayData('Swipe Cards', '4 Frames at 200x200 or 400x400 | JPG')">Swipe Cards</button>
+                    <button onclick="displayData('Webstories', '3 Frames at 450x800 | JPG\n1 Video at 1080x1920 | MP4')">Webstories</button>
+                    <button onclick="displayData('Rotating Cylinder', '1 Frame at 800x225 | JPG')">Rotating Cylinder</button>
+                    <button onclick="displayData('Shoppable AD', '1 Frame at 450x800 | JPG\n1 CTA in PNG/PSD')">Shoppable AD</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>LCB</h3>
+                <div class="button-container">
+                    <button onclick="displayData('Live Poll', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG')">Live Poll</button>
+                    <button onclick="displayData('After Over Summary', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG')">After Over Summary</button>
+                    <button onclick="displayData('Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette')">Celebration</button>
+                    <button onclick="displayData('Ticker', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG')">Ticker</button>
+                    <button onclick="displayData('Countdown Timer', '1 Frame at 300x250 | PSD')">Countdown Timer</button>
+                    <button onclick="displayData('Branded Marker', '3 Frames at 240x320 | JPG/PNG')">Branded Marker</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Additional/Innovative ADs</h3>
+                <div class="button-container">
+                    <button onclick="displayData('NH220', 'Brand Open File (PSD)\nFonts\n\t-OR-\nBrand Logo (PNG)\nBrand Color Palette\nBrand Messaging + Fonts')">NH220</button>
+                    <button onclick="displayData('Player Walks In', '1 Frame at 240x320 | JPG/PNG\nor\n1 Brand Mascot')">Player Walks In</button>
+                    <button onclick="displayData('Swipe to Unlock', '1 Frame at 996x216 | JPG\n1 Brand Asset/Icon/Mascot | PNG with Transparent Background')">Swipe to Unlock</button>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Misc. ADs</h3>
+                <div class="button-container">
+                    <button onclick="displayData('Video Marker', '1 Frame at 240x320 | JPG/PNG\n1 Video at 1920x1080 | MP4')">Video Marker</button>
+                    <button onclick="displayData('Standard Banners', '1 Frame at 450x800 | JPG/PNG\n1 Frame at 300x50 | JPG/PNG\n1 Frame at 300x100 | JPG/PNG\n1 Frame at 320x100 | JPG/PNG\n1 Frame at 320x50 | JPG/PNG\n1 Frame at 300x250 | JPG/PNG\n1 Frame at 728x90 | JPG/PNG\n1 Frame at 970x90 | JPG/PNG')">Standard Banners</button>
+                    <button onclick="displayData('Video Ads', 'Outstream and CTA--\n1 Video 1920x1080 | MP4\n1 CTA | PNG/PSD\n\nOutstream with Companion Banner--\n1 Video 1920x1080 | MP4\n1 Frame at 1280x720 | JPG/PSD\n\nOutstream Vertical--\n1 Video 1080x1920 | MP4\n\nVideo Interstitial--\n1 Video 1920x1080 | MP4\n1 Frame at 300x250 | JPG/PNG')">Video Ads</button>
+                    <button onclick="displayData('Lead Gen Form', '1 Frame at 150x250 | JPG/PNG\nMessaging for Brand Offers')">Lead Gen Form</button>
+                    <button onclick="displayData('Countdown Marker', '1 Frame at 100x105 | JPG/PNG')">Countdown Marker</button>
+                    <button onclick="displayData('Audio Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nAudio File | MP3')">Audio Celebration</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="display-container">
+            <div class="display-box">
+                <h3>Selected Requirements</h3>
+                <div id="displayContent" class="display-content">
+                    Click on any button to display requirements here.
+                </div>
+                <div class="button-row">
+                    <button class="copy-all-btn" onclick="copyDisplayContent()">
+                        <i class="fas fa-copy"></i> Copy All Requirements
+                    </button>
+                    <button class="clear-all-btn" onclick="clearDisplayContent()">
+                        <i class="fas fa-trash"></i> Clear All
+                    </button>
+                </div>
+            </div>            
+    </div>
+
+    <!-- Preview Button -->
+    <a href="https://docs.google.com/presentation/d/1wPVlApjqkdvcl9yGM1Q01SFQ2gI4IIoFmbmBhhlIoFs/edit?pli=1#slide=id.g24c612cf50f_1_292" target="_blank" class="preview-button">
+        <i class="fas fa-eye"></i> Click to View All Display ADs Preview
+    </a>
+
+    <div class="footer-separator"></div>
+    <footer>
+        CST Display AD Measurements Portal. Designed by Tenrin
+
+    </footer>
+
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                const toast = document.createElement('div');
+                toast.className = 'toast';
+                toast.textContent = `Copied to clipboard!`;
+                document.body.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.classList.add('hide');
+                    setTimeout(() => document.body.removeChild(toast), 500);
+                }, 2000);
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                alert(`Failed to copy. Error: ${err}`);
+            });
+        }
+
+        function toggleTheme() {
+            const body = document.body;
+            const themeButton = document.getElementById('themeButton');
+            const themeText = document.querySelector('.theme-toggle span');
+
+            if (body.classList.contains('light-theme')) {
+                body.classList.remove('light-theme');
+                themeButton.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                localStorage.setItem('theme', 'dark');
+            } else {
+                body.classList.add('light-theme');
+                themeButton.textContent = '☀️';
+                themeText.textContent = 'Light';
+                localStorage.setItem('theme', 'light');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeButton = document.getElementById('themeButton');
+            const themeText = document.querySelector('.theme-toggle span');
+            const previewButton = document.querySelector('.preview-button');
+            
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme');
+                themeButton.textContent = '☀️';
+                themeText.textContent = 'Light';
+            } else {
+                themeText.textContent = 'Dark';
+            }
+            
+            // Show preview button fully for 6 seconds
+            previewButton.classList.add('initial-show');
+            
+            setTimeout(() => {
+                // After 6 seconds, retract to show only part of the button
+                previewButton.classList.remove('initial-show');
+                previewButton.classList.add('visible');
+            }, 6000);
+        });
+        function displayData(title, data) {
+    const displayContent = document.getElementById('displayContent');
+    
+    // Check if the current content is just the placeholder
+    if (displayContent.innerText.trim() === "Click on any button to display requirements here.") {
+        // If it's the placeholder, replace it completely
+        displayContent.innerHTML = `<strong>${title}</strong>\n\n${data}`;
+    } else {
+        // Check if this title already exists in the content
+        if (!displayContent.innerText.includes(title)) {
+            // Only append if the title doesn't already exist
+            displayContent.innerHTML += `\n\n<strong>${title}</strong>\n\n${data}`;
+        }
+    }
+}
+
+
+function clearDisplayContent() {
+    const displayContent = document.getElementById('displayContent');
+    displayContent.innerHTML = 'Click on any button to display requirements here.';
+    
+    // Show a toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = 'Requirements cleared!';
+    document.body.appendChild(toast);
+
+    setTimeout(() => {
+        toast.classList.add('hide');
+        setTimeout(() => document.body.removeChild(toast), 500);
+    }, 2000);
+}
+
+
+
+function copyDisplayContent() {
+    const displayContent = document.getElementById('displayContent');
+    const text = displayContent.innerText;
+    
+    // Check if the content is just the placeholder
+    if (text.trim() === "Click on any button to display requirements here.") {
+        // Show a message that there's nothing to copy
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = `No requirements to copy!`;
+        document.body.appendChild(toast);
+        
+        setTimeout(() => {
+            toast.classList.add('hide');
+            setTimeout(() => document.body.removeChild(toast), 500);
+        }, 2000);
+        return;
+    }
+    
+    // Otherwise copy the content
+    navigator.clipboard.writeText(text).then(() => {
+        const toast = document.createElement('div');
+        toast.className = 'toast';
+        toast.textContent = `Copied to clipboard!`;
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+            toast.classList.add('hide');
+            setTimeout(() => document.body.removeChild(toast), 500);
+        }, 2000);
+    }).catch(err => {
+        console.error('Failed to copy: ', err);
+        alert(`Failed to copy. Error: ${err}`);
+    });
+}
+
+
+    </script>
+</body>
+</html>
