@@ -44,7 +44,7 @@
 
     <div class="flex justify-center items-center sticky top-0 z-[999] w-full">
 
-        <h1 class="mb-4 text-4xl font-bold text-center drop-shadow-lg">CST - MR | Client Requirements Portal</h1>
+        <h1 class="mb-4 text-4xl font-bold text-center drop-shadow-lg roboto">CST - MR | Client Requirements Portal</h1>
     </div>
     <div class="footer-separator w-full bg-gradient-to-r from-transparent via-white/30 to-transparent h-px mb-8"></div>
 
@@ -217,11 +217,11 @@
         </div>
 
         <!-- Display Container -->
-        <div class="display-container sticky top-5 self-start w-full md:w-[400px]">
+        <div class="display-container sticky top-5 self-start w-full md:w-[400px] h-full max-h-screen">
             <div class="display-box bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-5 shadow-lg h-full flex flex-col">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4">Selected Requirements</h3>
-                <div id="displayContent" class="display-content bg-black/30 rounded-lg p-4 flex-1 custom-scrollbar">
-                    Click on any button to display requirements here.
+                <div id="displayContent" class="display-content bg-black/30 rounded-lg p-4 flex-1 custom-scrollbar overflow-y-scroll">
+                    <div class="text-gray-400">Click on any button to display requirements here.</div>
                 </div>
                 <div class="button-row flex gap-3 mt-4">
                     <button onclick="copyDisplayContent()" 
@@ -240,13 +240,13 @@
     <!-- Preview Button -->
     <a href="https://docs.google.com/presentation/d/1wPVlApjqkdvcl9yGM1Q01SFQ2gI4IIoFmbmBhhlIoFs/edit?pli=1#slide=id.g24c612cf50f_1_292" 
        target="_blank" 
-       class="preview-button fixed -right-[135px] bottom-20 bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-l-full shadow-lg transition-all duration-500 hover:right-0 flex items-center">
+       class="preview-button fixed -right-[150px] bottom-20 bg-gradient-to-r from-red-500 to-orange-500 text-white px-6 py-3 rounded-l-full shadow-lg transition-all duration-500 hover:right-0 flex items-center">
         <i class="fas fa-eye text-lg mr-2"></i>View AD Previews
     </a>
 
     <!-- Footer -->
     <div class="footer-separator w-full bg-gradient-to-r from-transparent via-white/30 to-transparent h-px my-4"></div>
-    <footer class=" bottom-0 left-0 w-full bg-gray-900 text-white text-center py-4 text-sm">
+    <footer class=" bottom-0 left-0 w-full text-white text-center py-4 text-sm">
         CST Display AD Measurements Portal. Designed by Tenrin
     </footer>
 
@@ -448,45 +448,55 @@ document.addEventListener('DOMContentLoaded', () => {
         previewButton.classList.add('visible');
     }, 6000);
 });
-        let lastClickedButton = null;
+
+
+let disabledButtons = new Set();
 
 function displayData(title, data, buttonElement) {
     const displayContent = document.getElementById('displayContent');
     
-    // Re-enable and reset previous button style
-    if (lastClickedButton) {
-        lastClickedButton.disabled = false;
-        lastClickedButton.classList.remove('bg-gray-500', 'cursor-not-allowed');
-        lastClickedButton.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
-    }
-
-    // Disable and style new clicked button
+    // Disable and style clicked button
     buttonElement.disabled = true;
     buttonElement.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
     buttonElement.classList.add('bg-gray-500', 'cursor-not-allowed');
-    lastClickedButton = buttonElement;
+    disabledButtons.add(buttonElement);
 
-    // Update display content
-    displayContent.innerHTML = `<strong>${title}</strong>\n\n${data}`;
+    // Create new entry
+    const newEntry = document.createElement('div');
+    newEntry.className = 'mb-4 p-3 bg-black/30 rounded-lg';
+    newEntry.innerHTML = `
+        <strong class="">${title}</strong>
+        <pre class="whitespace-pre-wrap mt-2">${data}</pre>
+        `;
+        // <div class="text-xs text-gray-400 mt-2">${new Date().toLocaleString()}</div>
+
+    // Append new entry to top
+    displayContent.insertBefore(newEntry, displayContent.firstChild);
+
+    // Remove placeholder text if present
+    if (displayContent.children.length > 0 && 
+        displayContent.lastElementChild.textContent.includes("Click on any button")) {
+        displayContent.removeChild(displayContent.lastElementChild);
+    }
 }
 
 function clearDisplayContent() {
     const displayContent = document.getElementById('displayContent');
-    const buttons = document.querySelectorAll('.button-container button');
     
-    // Clear content
-    displayContent.innerHTML = 'Click on any button to display requirements here.';
+    // Clear content and restore placeholder
+    displayContent.innerHTML = '<div class="text-gray-400">Click on any button to display requirements here.</div>';
     
     // Re-enable all buttons and reset styles
-    buttons.forEach(button => {
+    disabledButtons.forEach(button => {
         button.disabled = false;
         button.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
         button.classList.remove('bg-gray-500', 'cursor-not-allowed');
     });
+    disabledButtons.clear();
     
-    lastClickedButton = null;
     showToast('Requirements cleared!');
 }
+
         // function displayData(title, data) {
         //     const displayContent = document.getElementById('displayContent');
         //     const content = displayContent.innerText.trim();
