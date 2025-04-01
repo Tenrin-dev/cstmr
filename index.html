@@ -32,13 +32,141 @@
             }
         }
 
+        .btn-container {
+            position: relative;
+        }
         
+        .eye-icon {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 20%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+            z-index: 10;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-top-left-radius: 0.5rem;
+            border-bottom-left-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-container:hover .eye-icon {
+            opacity: 1;
+        }
+        
+        .btn-container button {
+            padding-left: 2.5rem; /* Add extra padding on left side for when eye icon appears */
+        }
+        
+        .btn-container:hover button {
+            padding-left: 0; /* Reset padding when hovering to make room for eye icon */
+            width: 80%;
+            margin-left: 20%;
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }
+        
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: none;
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .lightbox-content {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 80vh;
+        }
+        
+        .lightbox-images {
+            display: flex;
+            overflow-x: auto;
+            gap: 10px;
+            padding: 20px;
+            max-width: 90vw;
+            height: 60vh;
+        }
+        
+        .lightbox-image-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 300px;
+            height: 50vh;
+        }
+        
+        .lightbox-image {
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 24px;
+            color: white;
+        }
+        
+        .lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 2001;
+        }
+        
+        .lightbox-title {
+            color: white;
+            font-size: 24px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .lightbox-nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .lightbox-nav button {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        
+        .lightbox-nav button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
     </style>
 </head>
 <body class="bg-black text-gray-200 min-h-screen flex flex-col items-center pt-5 relative font-sans">
     <!-- Theme Toggle -->
     <div class="theme-toggle absolute z-[1000] top-5 right-5 flex items-center bg-white/10 rounded-full px-4 py-2 cursor-pointer transition-colors hover:bg-white/20" onclick="toggleTheme()">
-        <span class="mr-2 font-semibold">Dark</span>
+        <span class="mr-2 font-semibold hidden md:inline">Dark</span>
         <button id="themeButton" class="w-7 h-7 rounded-full flex items-center justify-center p-0">🌙</button>
     </div>
 
@@ -57,22 +185,42 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">High Impact</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('Rotating Cube:', '3 Frames at 300x250 | JPG\n1 Frame at 250x250 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Rotating Cube
-                    </button>
-                    <button onclick="displayData('Slideshow:', '3 Frames at 300x250 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Slideshow
-                    </button>
-                    <button onclick="displayData('Reveal AD:', '1 Frame at 300x250 | JPG\n1 Cover at 300x250 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Reveal AD
-                    </button>
-                    <button onclick="displayData('Square Scroller:', '1 Frame at 300x250 | PSD',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Square Scroller
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('rotating-cube')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Rotating Cube:', '3 Frames at 300x250 | JPG\n1 Frame at 250x250 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Rotating Cube
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('slideshow')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Slideshow:', '3 Frames at 300x250 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Slideshow
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('reveal-ad')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Reveal AD:', '1 Frame at 300x250 | JPG\n1 Cover at 300x250 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Reveal AD
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('square-scroller')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Square Scroller:', '1 Frame at 300x250 | PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Square Scroller
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -80,22 +228,42 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">High Visibility</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('3x Interstitial:', '3 Frames 450x800 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        3x Interstitial
-                    </button>
-                    <button onclick="displayData('GIF Interstitial:', '3 Frames 450x800 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        GIF Interstitial
-                    </button>
-                    <button onclick="displayData('Revealer Interstitial:', '1 Frame 300x600 | JPG\n1 Cover 300x600 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Revealer Interstitial
-                    </button>
-                    <button onclick="displayData('Vertical Scroller:', '1 Frame 300x600 | PSD',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Vertical Scroller
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('3x-interstitial')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('3x Interstitial:', '3 Frames 450x800 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            3x Interstitial
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('gif-interstitial')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('GIF Interstitial:', '3 Frames 450x800 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            GIF Interstitial
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('revealer-interstitial')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Revealer Interstitial:', '1 Frame 300x600 | JPG\n1 Cover 300x600 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Revealer Interstitial
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('vertical-scroller')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Vertical Scroller:', '1 Frame 300x600 | PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Vertical Scroller
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -103,34 +271,69 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">Interactive</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('Expandable AD', '1 Cover at 300x250 | JPG\n1 Frame at 300x600 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Expandable AD
-                    </button>
-                    <button onclick="displayData('Page Peel', '1 Cover at 300x250 | JPG\n1 Frame at 300x250 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Page Peel
-                    </button>
-                    <button onclick="displayData('Flip Banner', '2 Frames at 300x250 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Flip Banner
-                    </button>
-                    <button onclick="displayData('Swipe Cards', '4 Frames at 200x200 or 400x400 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Swipe Cards
-                    </button>
-                    <button onclick="displayData('Webstories', '3 Frames at 450x800 | JPG\n1 Video at 1080x1920 | MP4',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Webstories
-                    </button>
-                    <button onclick="displayData('Rotating Cylinder', '1 Frame at 800x225 | JPG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Rotating Cylinder
-                    </button>
-                    <button onclick="displayData('Shoppable AD', '1 Frame at 450x800 | JPG\n1 CTA in PNG/PSD',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Shoppable AD
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('expandable-ad')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Expandable AD', '1 Cover at 300x250 | JPG\n1 Frame at 300x600 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Expandable AD
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('page-peel')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Page Peel', '1 Cover at 300x250 | JPG\n1 Frame at 300x250 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Page Peel
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('flip-banner')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Flip Banner', '2 Frames at 300x250 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Flip Banner
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('swipe-cards')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Swipe Cards', '4 Frames at 200x200 or 400x400 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Swipe Cards
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('webstories')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Webstories', '3 Frames at 450x800 | JPG\n1 Video at 1080x1920 | MP4',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Webstories
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('rotating-cylinder')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Rotating Cylinder', '1 Frame at 800x225 | JPG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Rotating Cylinder
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('shoppable-ad')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Shoppable AD', '1 Frame at 450x800 | JPG\n1 CTA in PNG/PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Shoppable AD
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -138,30 +341,60 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">LCB</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('Live Poll', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Live Poll
-                    </button>
-                    <button onclick="displayData('After Over Summary', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        After Over Summary
-                    </button>
-                    <button onclick="displayData('Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Celebration
-                    </button>
-                    <button onclick="displayData('Ticker', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Ticker
-                    </button>
-                    <button onclick="displayData('Countdown Timer', '1 Frame at 300x250 | PSD',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Countdown Timer
-                    </button>
-                    <button onclick="displayData('Branded Marker', '3 Frames at 240x320 | JPG/PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Branded Marker
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('live-poll')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Live Poll', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Live Poll
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('after-over-summary')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('After Over Summary', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            After Over Summary
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('celebration')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Celebration
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('ticker')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Ticker', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Ticker
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('countdown-timer')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Countdown Timer', '1 Frame at 300x250 | PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Countdown Timer
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('branded-marker')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Branded Marker', '3 Frames at 240x320 | JPG/PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Branded Marker
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -169,18 +402,33 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">Additional/Innovative ADs</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('NH220', 'Brand Open File (PSD)\nFonts\n\t-OR-\nBrand Logo (PNG)\nBrand Color Palette\nBrand Messaging + Fonts',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        NH220
-                    </button>
-                    <button onclick="displayData('Player Walks In', '1 Frame at 240x320 | JPG/PNG\nor\n1 Brand Mascot',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Player Walks In
-                    </button>
-                    <button onclick="displayData('Swipe to Unlock', '1 Frame at 996x216 | JPG\n1 Brand Asset/Icon/Mascot | PNG with Transparent Background',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Swipe to Unlock
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('nh220')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('NH220', 'Brand Open File (PSD)\nFonts\n\t-OR-\nBrand Logo (PNG)\nBrand Color Palette\nBrand Messaging + Fonts',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            NH220
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('player-walks-in')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Player Walks In', '1 Frame at 240x320 | JPG/PNG\nor\n1 Brand Mascot',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Player Walks In
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('swipe-to-unlock')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Swipe to Unlock', '1 Frame at 996x216 | JPG\n1 Brand Asset/Icon/Mascot | PNG with Transparent Background',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Swipe to Unlock
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -188,30 +436,105 @@
             <div class="section bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl px-5 shadow-lg h-full flex flex-col transition-transform hover:-translate-y-1 custom-scrollbar overflow-y-scroll">
                 <h3 class="text-purple-400 font-semibold text-lg mb-4 sticky top-0 bg-black z-[9999] py-2 mt-5 text-center">Misc. ADs</h3>
                 <div class="button-container flex flex-col gap-3 flex-1">
-                    <button onclick="displayData('Video Marker', '1 Frame at 240x320 | JPG/PNG\n1 Video at 1920x1080 | MP4',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Video Marker
-                    </button>
-                    <button onclick="displayData('Standard Banners', '1 Frame at 450x800 | JPG/PNG\n1 Frame at 300x50 | JPG/PNG\n1 Frame at 300x100 | JPG/PNG\n1 Frame at 320x100 | JPG/PNG\n1 Frame at 320x50 | JPG/PNG\n1 Frame at 300x250 | JPG/PNG\n1 Frame at 728x90 | JPG/PNG\n1 Frame at 970x90 | JPG/PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Standard Banners
-                    </button>
-                    <button onclick="displayData('Video Ads', 'Outstream and CTA--\n1 Video 1920x1080 | MP4\n1 CTA | PNG/PSD\n\nOutstream with Companion Banner--\n1 Video 1920x1080 | MP4\n1 Frame at 1280x720 | JPG/PSD\n\nOutstream Vertical--\n1 Video 1080x1920 | MP4\n\nVideo Interstitial--\n1 Video 1920x1080 | MP4\n1 Frame at 300x250 | JPG/PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Video Ads
-                    </button>
-                    <button onclick="displayData('Lead Gen Form', '1 Frame at 150x250 | JPG/PNG\nMessaging for Brand Offers',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Lead Gen Form
-                    </button>
-                    <button onclick="displayData('Countdown Marker', '1 Frame at 100x105 | JPG/PNG',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Countdown Marker
-                    </button>
-                    <button onclick="displayData('Audio Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nAudio File | MP3',this)" 
-                            class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
-                        Audio Celebration
-                    </button>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('video-marker')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Video Marker', '1 Frame at 240x320 | JPG/PNG\n1 Video at 1920x1080 | MP4',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Video Marker
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('standard-banners')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Standard Banners', '1 Frame at 450x800 | JPG/PNG\n1 Frame at 300x50 | JPG/PNG\n1 Frame at 300x100 | JPG/PNG\n1 Frame at 320x100 | JPG/PNG\n1 Frame at 320x50 | JPG/PNG\n1 Frame at 300x250 | JPG/PNG\n1 Frame at 728x90 | JPG/PNG\n1 Frame at 970x90 | JPG/PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Standard Banners
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('video-ads')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Video Ads', 'Outstream and CTA--\n1 Video 1920x1080 | MP4\n1 CTA | PNG/PSD\n\nOutstream with Companion Banner--\n1 Video 1920x1080 | MP4\n1 Frame at 1280x720 | JPG/PSD\n\nOutstream Vertical--\n1 Video 1080x1920 | MP4\n\nVideo Interstitial--\n1 Video 1920x1080 | MP4\n1 Frame at 300x250 | JPG/PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Video Ads
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('lead-gen-form')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Lead Gen Form', '1 Frame at 150x250 | JPG/PNG\nMessaging for Brand Offers',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Lead Gen Form
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('countdown-marker')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Countdown Marker', '1 Frame at 100x105 | JPG/PNG',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Countdown Marker
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('audio-celebration')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Audio Celebration', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nAudio File | MP3',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Audio Celebration
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('scorecard')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Scorecard', '300x250 | PSD\nBrand Logo\nMatch Details',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Scorecard
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('leaderboard')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Leaderboard', '300x250 | PSD\nBrand Logo\nChoice of Teams, Matches and Table Data',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Leaderboard
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('points-table')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Points Table', '300x250 | PSD\nBrand Logo\nChoice of Teams, Matches and Table Data',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Points Table
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('aston')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('Aston', '1920x252 | JPG/PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            Aston
+                        </button>
+                    </div>
+                    <div class="btn-container relative">
+                        <div class="eye-icon cursor-pointer" onclick="openLightbox('l-band')">
+                            <i class="fas fa-eye text-white"></i>
+                        </div>
+                        <button onclick="displayData('L Band', 'L Shape Combined into\nVertical - 390x1080 & Horizontal - 1530x220  | JPG/PSD',this)" 
+                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                            L Band
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -253,6 +576,22 @@
     <!-- Toast Notification -->
     <div id="toast" class="hidden fixed bottom-5 left-1/2 -translate-x-1/2 bg-black/80 text-white px-6 py-3 rounded-lg"></div>
 
+    <!-- Lightbox -->
+    <div id="lightbox" class="lightbox">
+        <div class="lightbox-close" onclick="closeLightbox()">
+            <i class="fas fa-times"></i>
+        </div>
+        <div class="lightbox-content">
+            <h3 id="lightbox-title" class="lightbox-title">Example Images</h3>
+            <div id="lightbox-images" class="lightbox-images">
+                <!-- Images will be inserted here dynamically -->
+            </div>
+            <div class="lightbox-nav">
+                <button onclick="closeLightbox()">Close</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         function showToast(message, duration = 2000) {
             const toast = document.getElementById('toast');
@@ -261,269 +600,127 @@
             setTimeout(() => toast.classList.add('hidden'), duration);
         }
 
-        // function toggleTheme() {
-        //     const body = document.body;
-        //     const themeButton = document.getElementById('themeButton');
-        //     const themeText = document.querySelector('.theme-toggle span');
-
-        //     body.classList.toggle('light-theme');
-        //     const isLight = body.classList.contains('light-theme');
+        function toggleTheme() {
+            const body = document.body;
+            const themeButton = document.getElementById('themeButton');
+            const themeText = document.querySelector('.theme-toggle span');
             
-        //     themeButton.textContent = isLight ? '☀️' : '🌙';
-        //     themeText.textContent = isLight ? 'Light' : 'Dark';
-        //     localStorage.setItem('theme', isLight ? 'light' : 'dark');
-        // }
+            if (body.classList.contains('light-theme')) {
+                // Switch to dark theme
+                body.classList.remove('light-theme', 'bg-gray-100', 'text-gray-800');
+                body.classList.add('bg-black', 'text-gray-200');
+                themeButton.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                
+                // Update sections to dark mode
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('bg-white/90');
+                    section.classList.add('bg-white/10');
+                });
+                
+                localStorage.setItem('theme', 'dark');
+            } else {
+                // Switch to light theme
+                body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
+                body.classList.remove('bg-black', 'text-gray-200');
+                themeButton.textContent = '☀️';
+                themeText.textContent = 'Light';
+                
+                // Update sections to light mode
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('bg-white/10');
+                    section.classList.add('bg-white/90');
+                });
+                
+                localStorage.setItem('theme', 'light');
+            }
+        }
 
-    //     function toggleTheme() {
-    //     const body = document.body;
-    //     const themeButton = document.getElementById('themeButton');
-        
-    //     if (body.classList.contains('light-theme')) {
-    //         // Switch to dark theme
-    //         body.classList.remove('light-theme');
-    //         body.classList.add('bg-black', 'text-gray-200');
-    //         themeButton.textContent = '🌙';
-    //         themeText.textContent = 'Light';
-
-    //         localStorage.setItem('theme', 'dark');
-    //     } else {
-    //         // Switch to light theme
-    //         body.classList.add('light-theme');
-    //         body.classList.remove('bg-black', 'text-gray-200');
-    //         body.classList.add('bg-gray-100', 'text-gray-800');
-    //         themeButton.textContent = '☀️';
-    //         themeText.textContent = 'Light';
-
-    //         localStorage.setItem('theme', 'light');
-    //     }
-        
-    //     // Update section backgrounds
-    //     document.querySelectorAll('.section').forEach(section => {
-    //         section.classList.toggle('bg-white/10');
-    //         section.classList.toggle('bg-white/90');
-    //     });
-    // }
-
-    // document.addEventListener('DOMContentLoaded', () => {
-    //         const savedTheme = localStorage.getItem('theme');
-    //         const themeButton = document.getElementById('themeButton');
-    //         const themeText = document.querySelector('.theme-toggle span');
-    //         const previewButton = document.querySelector('.preview-button');
+        document.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            const themeButton = document.getElementById('themeButton');
+            const themeText = document.querySelector('.theme-toggle span');
+            const previewButton = document.querySelector('.preview-button');
             
-    //         if (savedTheme === 'light') {
-    //             document.body.classList.add('light-theme');
-    //             themeButton.textContent = '☀️';
-    //             themeText.textContent = 'Light';
-    //         } else {
-    //             themeText.textContent = 'Dark';
-    //         }
+            if (savedTheme === 'light') {
+                document.body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
+                document.body.classList.remove('bg-black', 'text-gray-200');
+                themeButton.textContent = '☀️';
+                themeText.textContent = 'Light';
+                
+                // Initialize sections with light mode background
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('bg-white/10');
+                    section.classList.add('bg-white/90');
+                });
+            } else {
+                document.body.classList.add('bg-black', 'text-gray-200');
+                document.body.classList.remove('light-theme');
+                themeButton.textContent = '🌙';
+                themeText.textContent = 'Dark';
+                
+                // Ensure sections have dark mode background
+                document.querySelectorAll('.section').forEach(section => {
+                    section.classList.remove('bg-white/90');
+                    section.classList.add('bg-white/10');
+                });
+            }
             
-    //         // Show preview button fully for 6 seconds
-    //         previewButton.classList.add('initial-show');
+            // Show preview button fully for 6 seconds
+            previewButton.classList.add('initial-show');
             
-    //         setTimeout(() => {
-    //             // After 6 seconds, retract to show only part of the button
-    //             previewButton.classList.remove('initial-show');
-    //             previewButton.classList.add('visible');
-    //         }, 6000);
-    //     });
-    
-
-//     function toggleTheme() {
-//     const body = document.body;
-//     const themeButton = document.getElementById('themeButton');
-//     const themeText = document.querySelector('.theme-toggle span');
-    
-//     if (body.classList.contains('light-theme')) {
-//         // Switch to dark theme
-//         body.classList.remove('light-theme', 'bg-gray-100', 'text-gray-800');
-//         body.classList.add('bg-black', 'text-gray-200');
-//         themeButton.textContent = '🌙';
-//         themeText.textContent = 'Dark';
-//         localStorage.setItem('theme', 'dark');
-//     } else {
-//         // Switch to light theme
-//         body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
-//         body.classList.remove('bg-black', 'text-gray-200');
-//         themeButton.textContent = '☀️';
-//         themeText.textContent = 'Light';
-//         localStorage.setItem('theme', 'light');
-//     }
-    
-//     // Update section backgrounds
-//     document.querySelectorAll('.section').forEach(section => {
-//         section.classList.toggle('bg-white/10');
-//         section.classList.toggle('bg-white/90');
-//     });
-// }
-
-
-function toggleTheme() {
-    const body = document.body;
-    const themeButton = document.getElementById('themeButton');
-    const themeText = document.querySelector('.theme-toggle span');
-    
-    if (body.classList.contains('light-theme')) {
-        // Switch to dark theme
-        body.classList.remove('light-theme', 'bg-gray-100', 'text-gray-800');
-        body.classList.add('bg-black', 'text-gray-200');
-        themeButton.textContent = '🌙';
-        themeText.textContent = 'Dark';
-        
-        // Update sections to dark mode
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('bg-white/90');
-            section.classList.add('bg-white/10');
+            setTimeout(() => {
+                previewButton.classList.remove('initial-show');
+                previewButton.classList.add('visible');
+            }, 6000);
         });
-        
-        localStorage.setItem('theme', 'dark');
-    } else {
-        // Switch to light theme
-        body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
-        body.classList.remove('bg-black', 'text-gray-200');
-        themeButton.textContent = '☀️';
-        themeText.textContent = 'Light';
-        
-        // Update sections to light mode
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('bg-white/10');
-            section.classList.add('bg-white/90');
-        });
-        
-        localStorage.setItem('theme', 'light');
-    }
-}
 
-document.addEventListener('DOMContentLoaded', () => {
-    // const savedTheme = localStorage.getItem('theme');
-    // const themeButton = document.getElementById('themeButton');
-    // const themeText = document.querySelector('.theme-toggle span');
-    // const previewButton = document.querySelector('.preview-button');
-    
-    // if (savedTheme === 'light') {
-    //     document.body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
-    //     document.body.classList.remove('bg-black', 'text-gray-200');
-    //     themeButton.textContent = '☀️';
-    //     themeText.textContent = 'Light';
-    // } else {
-    //     document.body.classList.add('bg-black', 'text-gray-200');
-    //     document.body.classList.remove('light-theme');
-    //     themeButton.textContent = '🌙';
-    //     themeText.textContent = 'Dark';
-    // }
-    const savedTheme = localStorage.getItem('theme');
-    const themeButton = document.getElementById('themeButton');
-    const themeText = document.querySelector('.theme-toggle span');
-    const previewButton = document.querySelector('.preview-button');
-    
-    if (savedTheme === 'light') {
-        document.body.classList.add('light-theme', 'bg-gray-100', 'text-gray-800');
-        document.body.classList.remove('bg-black', 'text-gray-200');
-        themeButton.textContent = '☀️';
-        themeText.textContent = 'Light';
-        
-        // Initialize sections with light mode background
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('bg-white/10');
-            section.classList.add('bg-white/90');
-        });
-    } else {
-        document.body.classList.add('bg-black', 'text-gray-200');
-        document.body.classList.remove('light-theme');
-        themeButton.textContent = '🌙';
-        themeText.textContent = 'Dark';
-        
-        // Ensure sections have dark mode background
-        document.querySelectorAll('.section').forEach(section => {
-            section.classList.remove('bg-white/90');
-            section.classList.add('bg-white/10');
-        });
-    }
-    
-    // Show preview button fully for 6 seconds
-    previewButton.classList.add('initial-show');
-    
-    setTimeout(() => {
-        previewButton.classList.remove('initial-show');
-        previewButton.classList.add('visible');
-    }, 6000);
-});
+        let disabledButtons = new Set();
 
-
-let disabledButtons = new Set();
-
-function displayData(title, data, buttonElement) {
-    const displayContent = document.getElementById('displayContent');
-    
-    // Disable and style clicked button
-    buttonElement.disabled = true;
-    buttonElement.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
-    buttonElement.classList.add('bg-gray-500', 'cursor-not-allowed');
-    disabledButtons.add(buttonElement);
-
-    // Create new entry
-    const newEntry = document.createElement('div');
-    newEntry.className = 'mb-4 p-3 bg-black/30 rounded-lg';
-    newEntry.innerHTML = `
-        <strong class="">${title}</strong>
-        <pre class="whitespace-pre-wrap mt-2">${data}</pre>
-        `;
-        // <div class="text-xs text-gray-400 mt-2">${new Date().toLocaleString()}</div>
-
-    // Append new entry to top
-    displayContent.insertBefore(newEntry, displayContent.firstChild);
-
-    // Remove placeholder text if present
-    if (displayContent.children.length > 0 && 
-        displayContent.lastElementChild.textContent.includes("Click on any button")) {
-        displayContent.removeChild(displayContent.lastElementChild);
-    }
-}
-
-function clearDisplayContent() {
-    const displayContent = document.getElementById('displayContent');
-    
-    // Clear content and restore placeholder
-    displayContent.innerHTML = '<div class="text-gray-400">Click on any button to display requirements here.</div>';
-    
-    // Re-enable all buttons and reset styles
-    disabledButtons.forEach(button => {
-        button.disabled = false;
-        button.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
-        button.classList.remove('bg-gray-500', 'cursor-not-allowed');
-    });
-    disabledButtons.clear();
-    
-    showToast('Requirements cleared!');
-}
-
-        // function displayData(title, data) {
-        //     const displayContent = document.getElementById('displayContent');
-        //     const content = displayContent.innerText.trim();
+        function displayData(title, data, buttonElement) {
+            const displayContent = document.getElementById('displayContent');
             
-        //     if (content === "Click on any button to display requirements here.") {
-        //         displayContent.innerHTML = `<strong>${title}</strong>\n\n${data}`;
-        //     } else if (!content.includes(title)) {
-        //         displayContent.innerHTML += `\n\n<strong>${title}</strong>\n\n${data}`;
-        //     }
-        // }
+            // Disable and style clicked button
+            buttonElement.disabled = true;
+            buttonElement.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
+            buttonElement.classList.add('bg-gray-500', 'cursor-not-allowed');
+            disabledButtons.add(buttonElement);
 
-        //     const displayContent = document.getElementById('displayContent');
+            // Create new entry
+            const newEntry = document.createElement('div');
+            newEntry.className = 'mb-4 p-3 bg-black/30 rounded-lg';
+            newEntry.innerHTML = `
+                <strong class="">${title}</strong>
+                <pre class="whitespace-pre-wrap mt-2">${data}</pre>
+                `;
+                // <div class="text-xs text-gray-400 mt-2">${new Date().toLocaleString()}</div>
+
+            // Append new entry to top
+            displayContent.insertBefore(newEntry, displayContent.firstChild);
+
+            // Remove placeholder text if present
+            if (displayContent.children.length > 0 && 
+                displayContent.lastElementChild.textContent.includes("Click on any button")) {
+                displayContent.removeChild(displayContent.lastElementChild);
+            }
+        }
+
+        function clearDisplayContent() {
+            const displayContent = document.getElementById('displayContent');
             
-        //     // Disable clicked button and change style
-        //     buttonElement.disabled = true;
-        //     buttonElement.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
-        //     buttonElement.classList.add('bg-gray-500', 'cursor-not-allowed');
-
-        //     // Clear previous content and show new requirements
-        //     displayContent.innerHTML = `<strong>${title}</strong>\n\n${data}`;
-        // }
-
-        // function clearDisplayContent() {
-        //     const displayContent = document.getElementById('displayContent');
-        //     displayContent.innerHTML = 'Click on any button to display requirements here.';
-        //     showToast('Requirements cleared!');
-        // }
+            // Clear content and restore placeholder
+            displayContent.innerHTML = '<div class="text-gray-400">Click on any button to display requirements here.</div>';
+            
+            // Re-enable all buttons and reset styles
+            disabledButtons.forEach(button => {
+                button.disabled = false;
+                button.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600');
+                button.classList.remove('bg-gray-500', 'cursor-not-allowed');
+            });
+            disabledButtons.clear();
+            
+            showToast('Requirements cleared!');
+        }
 
         function copyDisplayContent() {
             const displayContent = document.getElementById('displayContent');
@@ -539,15 +736,336 @@ function clearDisplayContent() {
                 .catch(err => console.error('Failed to copy:', err));
         }
 
-        // Initialize theme
-        document.addEventListener('DOMContentLoaded', () => {
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-theme');
-                document.getElementById('themeButton').textContent = '☀️';
-                document.querySelector('.theme-toggle span').textContent = 'Light';
+        // Image gallery data
+        const imageGallery = {
+            'rotating-cube': {
+                title: 'Rotating Cube  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743361370/High%20Impact/Cube.mp4'
+                ]
+            },
+            'slideshow': {
+                title: 'Slideshow  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743361390/High%20Impact/Slidehsow.mp4'
+                ]
+            },
+            'reveal-ad': {
+                title: 'Reveal AD  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743359951/High%20Impact/RevealAD.gif'
+                ]
+            },
+            'square-scroller': {
+                title: 'Square Scroller  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743359957/High%20Impact/squarescroller.gif'
+                ]
+            },
+            '3x-interstitial': {
+                title: '3x Interstitial  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360119/High%20Visibility/3xINT.gif'
+                ]
+            },
+            'gif-interstitial': {
+                title: 'GIF Interstitial  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360121/High%20Visibility/GIF-INT.gif'
+                ]
+            },
+            'revealer-interstitial': {
+                title: 'Revealer Interstitial  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360127/High%20Visibility/RevealerINT.gif'
+                ]
+            },
+            'vertical-scroller': {
+                title: 'Vertical Scroller  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360134/High%20Visibility/VerticalScroller.gif'
+                ]
+            },
+            'expandable-ad': {
+                title: 'Expandable AD  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360230/Interactive/Expandable.gif'
+                ]
+            },
+            'page-peel': {
+                title: 'Page Peel  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360228/Interactive/Page%20Peel.gif'
+                ]
+            },
+            'flip-banner': {
+                title: 'Flip Banner  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360241/Interactive/FlipBanner.gif'
+                ]
+            },
+            'swipe-cards': {
+                title: 'Swipe Cards  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743361304/Interactive/Swipe%20Card.mp4'
+                ]
+            },
+            'webstories': {
+                title: 'Webstories  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360860/Interactive/Webstory.mp4'
+                ]
+            },
+            'rotating-cylinder': {
+                title: 'Rotating Cylinder  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360231/Interactive/Cylinder.gif'
+                ]
+            },
+            'shoppable-ad': {
+                title: 'Shoppable AD  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743361211/Interactive/Shoppable.mp4'
+                ]
+            },
+            'live-poll': {
+                title: 'Live Poll  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068751/Live_Poll_ezi2ss.png'
+                ]
+            },
+            'after-over': {
+                title: 'After Over  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743359658/LCB/After%20Over.png'
+                ]
+            },
+            'celebration': {
+                title: 'Celebration  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068714/six_oxjhvp.gif'
+                ]
+            },
+            'ticker': {
+                title: 'Ticker  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068761/Preview_oqjgdi.gif'
+                ]
+            },
+            'countdown-timer': {
+                title: 'Countdown Timer  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068797/300x250_Countdown_Timer_ooxldt.png'
+                ]
+            },
+            'branded-marker': {
+                title: 'Branded Marker  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068806/Branded_marker_ojwlth.gif'
+                ]
+            },
+            'nh220': {
+                title: 'NH220  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360347/Additional-Innovative%20Ads/NH220.gif'
+                ]
+            },
+            'player-walks-in': {
+                title: 'Player Walks In  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360362/Additional-Innovative%20Ads/PlayerWalksIn.gif'
+                ]
+            },
+            'swipe-to-unlock': {
+                title: 'Swipe to Unlock  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360361/Additional-Innovative%20Ads/SwipeToUnlock.gif'
+                ]
+            },
+            'video-marker': {
+                title: 'Video Marker  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360454/Misc%20Ads/VideoMarker.mp4'
+                ]
+            },
+            'standard-banners': {
+                title: 'Standard Banners  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20970x90.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20728x90.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20450x800.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20320x100.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x100.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x250.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20320x50.jpg',
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361528/Standard%20Banners/Standard%20banner%20-%20300x50.jpg'
+                ]
+            },
+            'video-ads': {
+                title: 'Video Ads  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360477/Misc%20Ads/Video%20ADs/atqrqmaiuq1q3wtjpv0b.mp4',
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/faqnh8tyewm6fvoprroz.mp4',
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/bevvtuodrgqzloilq5ca.mp4',
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/wyjadjdombvftf1qgb9l.mp4'
+                ]
+            },
+            'lead-gen-form': {
+                title: 'Lead Gen Form  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743360452/Misc%20Ads/LeadGenForm.png'
+                ]
+            },
+            'countdown-marker': {
+                title: 'Countdown Marker  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743416788/Misc%20Ads/Countdown%20Marker.png'
+                ]
+            },
+            'audio-celebration': {
+                title: 'Audio Celebration  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743416795/Misc%20Ads/Audio%20Celebration.mp4'
+                ]
+            },
+            'scorecard': {
+                title: 'Scorecard  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743435293/Misc%20Ads/Scorecard.png'
+                ]
+            },
+            'leaderboard': {
+                title: 'Leaderboard  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743435355/Misc%20Ads/Leaderboard.png'
+                ]
+            },
+            'points-table': {
+                title: 'Points Table  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743435277/Misc%20Ads/Points%20Table.png'
+                ]
+            },
+            'aston': {
+                title: 'Aston  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743435317/Misc%20Ads/Aston%20and%20L%20Band/Aston.png'
+                ]
+            },
+            'l-band': {
+                title: 'L Band  ',
+                images: [
+                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743438488/Misc%20Ads/Aston%20and%20L%20Band/LBand.png'
+                ]
             }
-        });
+        };
+
+        function openLightbox(id) {
+            const gallery = imageGallery[id];
+            if (!gallery) return;
+
+            const lightbox = document.getElementById('lightbox');
+            const lightboxTitle = document.getElementById('lightbox-title');
+            const lightboxImages = document.getElementById('lightbox-images');
+            
+            // Clear previous content
+            lightboxImages.innerHTML = '';
+            lightboxTitle.textContent = gallery.title;
+            
+            // Add loading indicator
+            const loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'loading-indicator';
+            loadingIndicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            lightbox.appendChild(loadingIndicator);
+            
+            // Create image containers
+            let loadedCount = 0;
+            const totalImages = gallery.images.length;
+            
+            gallery.images.forEach(src => {
+                const container = document.createElement('div');
+                container.className = 'lightbox-image-container';
+                
+                // Check if the source is a video (contains video extensions)
+                const isVideo = /\.(mp4|webm|mov|avi|wmv)$/i.test(src);
+                
+                if (isVideo) {
+                    // Create video element for video sources
+                    const video = document.createElement('video');
+                    video.className = 'lightbox-image'; // Reuse the same class for styling
+                    video.src = src;
+                    video.autoplay = true;
+                    video.muted = true;
+                    video.loop = true;
+                    video.controls = true;
+                    video.style.maxHeight = '100%';
+                    video.style.maxWidth = '100%';
+                    video.style.height = '55vh';
+                    video.style.objectFit = 'contain';
+                    
+                    // Handle video load event
+                    video.onloadeddata = () => {
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            // Remove loading indicator when all media is loaded
+                            lightbox.removeChild(loadingIndicator);
+                        }
+                    };
+                    
+                    // Handle video error
+                    video.onerror = () => {
+                        video.src = 'https://via.placeholder.com/300x250?text=Video+Load+Error';
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            lightbox.removeChild(loadingIndicator);
+                        }
+                    };
+                    
+                    container.appendChild(video);
+                } else {
+                    // Create image element for image sources
+                    const img = document.createElement('img');
+                    img.className = 'lightbox-image';
+                    img.src = src;
+                    img.style.maxHeight = '55vh';
+                    img.style.objectFit = 'contain';
+                    
+                    // Handle image load event
+                    img.onload = () => {
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            // Remove loading indicator when all media is loaded
+                            lightbox.removeChild(loadingIndicator);
+                        }
+                    };
+                    
+                    // Handle image error
+                    img.onerror = () => {
+                        img.src = 'https://via.placeholder.com/300x250?text=Image+Load+Error';
+                        loadedCount++;
+                        if (loadedCount === totalImages) {
+                            lightbox.removeChild(loadingIndicator);
+                        }
+                    };
+                    
+                    container.appendChild(img);
+                }
+                
+                lightboxImages.appendChild(container);
+            });
+            
+            // Show lightbox
+            lightbox.style.display = 'flex';
+            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+        }
+        
+        function closeLightbox() {
+            const lightbox = document.getElementById('lightbox');
+            lightbox.style.display = 'none';
+            
+            // Re-enable scrolling
+            document.body.style.overflow = 'auto';
+        }
     </script>
 </body>
 </html>
