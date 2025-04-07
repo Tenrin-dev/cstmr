@@ -51,6 +51,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 0.5rem;
         }
         
         .btn-container button {
@@ -102,7 +103,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            width: 300px;
+            width: 700px;
             height: 50vh;
         }
         
@@ -171,11 +172,10 @@
         <button id="themeButton" class="w-7 h-7 rounded-full flex items-center justify-center p-0">🌙</button>
     </div>
 
-    <div class="flex justify-center items-center md:sticky top-0 z-[999] w-full">
-
+    <div class="flex justify-center items-center top-0 z-[999] w-full pb-4">
         <h1 class="mb-4 md:text-4xl font-bold text-center drop-shadow-lg roboto">CST - MR | Client <br class="md:hidden" /> Requirements Portal</h1>
     </div>
-    <div class="footer-separator w-full bg-gradient-to-r from-transparent via-white/30 to-transparent h-px mb-8"></div>
+    <div class="footer-separator w-full bg-gradient-to-r from-transparent via-white/30 to-transparent h-px mb-8 relative z-[998]"></div>
 
 
     <main class="main-container w-full max-w-7xl md:h-[80vh] flex flex-col md:flex-row gap-8 px-5 mb-8 ">
@@ -356,7 +356,7 @@
                             <i class="fas fa-eye text-white"></i>
                         </div>
                         <button onclick="displayData('After Over Summary', 'Brand Logo | PNG\nBrand Fonts\nBrand Messaging\nBrand Color Palette\nCTA Button Text or Button in PNG',this)" 
-                                class="w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
+                                class="w-full px-4 pl-6 text-sm py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg text-white font-semibold shadow-md hover:from-purple-600 hover:to-blue-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lg">
                             After Over Summary
                         </button>
                     </div>
@@ -835,8 +835,8 @@
                     'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743068751/Live_Poll_ezi2ss.png'
                 ]
             },
-            'after-over': {
-                title: 'After Over  ',
+            'after-over-summary': {
+                title: 'After Over Summary  ',
                 images: [
                     'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743359658/LCB/After%20Over.png'
                 ]
@@ -892,23 +892,59 @@
             'standard-banners': {
                 title: 'Standard Banners  ',
                 images: [
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20970x90.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20728x90.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20450x800.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20320x100.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x100.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x250.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20320x50.jpg',
-                    'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361528/Standard%20Banners/Standard%20banner%20-%20300x50.jpg'
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20970x90.jpg',
+                        label: '970x90 (Desktop)'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361530/Standard%20Banners/Standard%20banner%20-%20728x90.jpg',
+                        label: '728x90 (Desktop)'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20450x800.jpg',
+                        label: '450x800'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20Banner%20-%20320x100.jpg',
+                        label: '320x100'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x100.jpg',
+                        label: '300x100'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20300x250.jpg',
+                        label: '300x250'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361529/Standard%20Banners/Standard%20banner%20-%20320x50.jpg',
+                        label: '320x50'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/image/upload/v1743361528/Standard%20Banners/Standard%20banner%20-%20300x50.jpg',
+                        label: '300x50'
+                    }
                 ]
             },
             'video-ads': {
                 title: 'Video Ads  ',
                 images: [
-                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360477/Misc%20Ads/Video%20ADs/atqrqmaiuq1q3wtjpv0b.mp4',
-                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/faqnh8tyewm6fvoprroz.mp4',
-                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/bevvtuodrgqzloilq5ca.mp4',
-                    'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/wyjadjdombvftf1qgb9l.mp4'
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360477/Misc%20Ads/Video%20ADs/atqrqmaiuq1q3wtjpv0b.mp4',
+                        label: 'Outstream and CTA'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/faqnh8tyewm6fvoprroz.mp4',
+                        label: 'Outstream with Companion Banner'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/bevvtuodrgqzloilq5ca.mp4',
+                        label: 'Video Interstitial'
+                    },
+                    {
+                        src: 'https://res.cloudinary.com/dzuxl9oaz/video/upload/v1743360476/Misc%20Ads/Video%20ADs/wyjadjdombvftf1qgb9l.mp4',
+                        label: 'Outstream Vertical'
+                    }
                 ]
             },
             'lead-gen-form': {
@@ -983,17 +1019,20 @@
             let loadedCount = 0;
             const totalImages = gallery.images.length;
             
-            gallery.images.forEach(src => {
+            gallery.images.forEach(item => {
                 const container = document.createElement('div');
-                container.className = 'lightbox-image-container';
+                container.className = 'lightbox-image-container flex flex-col items-center';
                 
-                // Check if the source is a video (contains video extensions)
+                const src = typeof item === 'string' ? item : item.src;
+                const label = typeof item === 'string' ? null : item.label;
+                
+                // Check if the source is a video
                 const isVideo = /\.(mp4|webm|mov|avi|wmv)$/i.test(src);
                 
                 if (isVideo) {
                     // Create video element for video sources
                     const video = document.createElement('video');
-                    video.className = 'lightbox-image'; // Reuse the same class for styling
+                    video.className = 'lightbox-image';
                     video.src = src;
                     video.autoplay = true;
                     video.muted = true;
@@ -1001,14 +1040,13 @@
                     video.controls = true;
                     video.style.maxHeight = '100%';
                     video.style.maxWidth = '100%';
-                    video.style.height = '55vh';
+                    video.style.height = '45vh';
                     video.style.objectFit = 'contain';
                     
                     // Handle video load event
                     video.onloadeddata = () => {
                         loadedCount++;
                         if (loadedCount === totalImages) {
-                            // Remove loading indicator when all media is loaded
                             lightbox.removeChild(loadingIndicator);
                         }
                     };
@@ -1023,19 +1061,26 @@
                     };
                     
                     container.appendChild(video);
+                    
+                    // Add label if it exists
+                    if (label) {
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'text-white text-center mt-2 font-semibold';
+                        labelDiv.textContent = label;
+                        container.appendChild(labelDiv);
+                    }
                 } else {
                     // Create image element for image sources
                     const img = document.createElement('img');
                     img.className = 'lightbox-image';
                     img.src = src;
-                    img.style.maxHeight = '55vh';
+                    img.style.maxHeight = '45vh';
                     img.style.objectFit = 'contain';
                     
                     // Handle image load event
                     img.onload = () => {
                         loadedCount++;
                         if (loadedCount === totalImages) {
-                            // Remove loading indicator when all media is loaded
                             lightbox.removeChild(loadingIndicator);
                         }
                     };
@@ -1050,6 +1095,14 @@
                     };
                     
                     container.appendChild(img);
+                    
+                    // Add label if it exists
+                    if (label) {
+                        const labelDiv = document.createElement('div');
+                        labelDiv.className = 'text-white text-center mt-2 font-semibold';
+                        labelDiv.textContent = label;
+                        container.appendChild(labelDiv);
+                    }
                 }
                 
                 lightboxImages.appendChild(container);
@@ -1057,7 +1110,7 @@
             
             // Show lightbox
             lightbox.style.display = 'flex';
-            document.body.style.overflow = 'hidden'; // Prevent scrolling when lightbox is open
+            document.body.style.overflow = 'hidden';
         }
         
         function closeLightbox() {
